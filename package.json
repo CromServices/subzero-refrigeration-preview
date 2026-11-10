@@ -1,0 +1,12 @@
+{
+  "name": "subzero-refrigeration-preview",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node checks/check.mjs",
+    "embed": "node scripts/make-embed.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.65.0"
+  }
+}
