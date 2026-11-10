@@ -115,9 +115,22 @@ html[data-theme="dark"] .about p{color:#D0DCE2}
 .trades li{background:var(--white);padding:10px 14px;font-weight:600;font-size:14px;border:1px solid var(--line);min-height:44px;display:inline-flex;align-items:center}
 
 .work{background:var(--white)}
-.masonry{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.masonry .wide{grid-column:span 2}
-.masonry picture{display:block;height:100%}
+.masonry{
+  display:grid;
+  gap:10px;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-areas:
+    "a a b c"
+    "d e f g";
+}
+.masonry .g1{grid-area:a}
+.masonry .g2{grid-area:b}
+.masonry .g3{grid-area:c}
+.masonry .g4{grid-area:d}
+.masonry .g5{grid-area:e}
+.masonry .g6{grid-area:f}
+.masonry .g7{grid-area:g}
+.masonry picture{display:block;height:100%;min-width:0;min-height:0}
 .masonry img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
 
 .projects{background:var(--paper)}
@@ -192,8 +205,6 @@ footer.site img{height:36px;width:auto}
   .hero-photo{height:420px;min-height:52vw}
   .hero-photo img{object-position:center 78%}
   .cards,.split,.contact-grid{grid-template-columns:1fr}
-  .masonry{grid-template-columns:1fr 1fr}
-  .masonry .wide{grid-column:span 2}
   .plist{grid-template-columns:1fr 1fr}
   form.quote-form,form.book-form{grid-template-columns:1fr}
 }
@@ -205,8 +216,7 @@ footer.site img{height:36px;width:auto}
   .wrap,.hero-copy{width:min(var(--max),calc(100% - 32px))}
   section,.contact{padding:64px 0}
   .hero h1{font-size:32px}
-  .plist,.masonry{grid-template-columns:1fr}
-  .masonry .wide{grid-column:auto}
+  .plist{grid-template-columns:1fr}
   .cards{grid-template-columns:1fr}
   .day-chips,.time-pills{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;max-width:100%}
   .sticky-call{
@@ -222,6 +232,38 @@ footer.site img{height:36px;width:auto}
   .sticky-call a+a{border-left:1px solid #1A3A46}
   .sticky-call a.quote{background:#fff;color:var(--deep)}
   body{padding-bottom:56px}
+}
+@media (max-width:1024px){
+  .masonry{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-areas:
+      "a a b"
+      "c d e"
+      "f g g";
+  }
+}
+@media (max-width:768px){
+  .masonry{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:
+      "a b"
+      "c d"
+      "e f"
+      "g g";
+  }
+}
+@media (max-width:390px){
+  .masonry{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:
+      "a"
+      "b"
+      "c"
+      "d"
+      "e"
+      "f"
+      "g";
+  }
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto !important;transition:none !important;animation:none !important}
@@ -361,31 +403,31 @@ footer.site img{height:36px;width:auto}
       <p class="kicker">On the tools</p>
       <h2>Recent work</h2>
       <div class="masonry">
-        <picture class="wide">
+        <picture class="g1">
           <source type="image/webp" srcset="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-door-1200.webp">
           <img src="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-door-1200.jpg" width="1200" height="1500" alt="A commercial cool-room door in a kitchen">
         </picture>
-        <picture>
+        <picture class="g2">
           <source type="image/webp" srcset="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-inside-1200.webp">
           <img src="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-inside-1200.jpg" width="1200" height="1122" alt="Inside a cool-room, with racks and a ceiling unit">
         </picture>
-        <picture>
+        <picture class="g3">
           <source type="image/webp" srcset="https://cromservices.github.io/subzero-refrigeration-preview/assets/roof-plant-1200.webp">
           <img src="https://cromservices.github.io/subzero-refrigeration-preview/assets/roof-plant-1200.jpg" width="1200" height="900" alt="Roof plant on a commercial building">
         </picture>
-        <picture>
+        <picture class="g4">
           <source type="image/webp" srcset="https://cromservices.github.io/subzero-refrigeration-preview/assets/kfc-store-640.webp">
           <img src="https://cromservices.github.io/subzero-refrigeration-preview/assets/kfc-store-640.jpg" width="640" height="480" alt="A KFC storefront">
         </picture>
-        <picture>
+        <picture class="g5">
           <source type="image/webp" srcset="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-work-764.webp">
           <img src="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-work-764.jpg" width="764" height="554" alt="A technician working on a cool-room unit">
         </picture>
-        <picture class="wide">
+        <picture class="g6">
           <source type="image/webp" srcset="https://cromservices.github.io/subzero-refrigeration-preview/assets/roof-tech-692.webp">
           <img src="https://cromservices.github.io/subzero-refrigeration-preview/assets/roof-tech-692.jpg" width="692" height="498" alt="A technician working on roof plant">
         </picture>
-        <picture>
+        <picture class="g7">
           <source type="image/webp" srcset="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-floor-408.webp">
           <img src="https://cromservices.github.io/subzero-refrigeration-preview/assets/coolroom-floor-408.jpg" width="408" height="607" alt="Inside a cool-room, looking toward the door">
         </picture>

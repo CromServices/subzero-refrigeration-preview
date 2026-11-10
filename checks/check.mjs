@@ -80,6 +80,48 @@ function fail(msg) {
   throw new Error(msg);
 }
 
+async function galleryFilled(page, width) {
+  await page.setViewportSize({ width, height: width <= 400 ? 844 : 900 });
+  await page.locator(".masonry").scrollIntoViewIfNeeded();
+  const report = await page.evaluate(() => {
+    const root = document.querySelector(".masonry");
+    const cs = getComputedStyle(root);
+    const gap = parseFloat(cs.columnGap || cs.gap) || 0;
+    const box = root.getBoundingClientRect();
+    const items = [...root.children].map((el) => {
+      const r = el.getBoundingClientRect();
+      return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
+    });
+    const rows = [];
+    items.forEach((it) => {
+      let row = rows.find((r) => Math.abs(r.top - it.top) < 3);
+      if (!row) {
+        row = { top: it.top, items: [] };
+        rows.push(row);
+      }
+      row.items.push(it);
+    });
+    rows.sort((a, b) => a.top - b.top);
+    const issues = [];
+    rows.forEach((row, i) => {
+      row.items.sort((a, b) => a.left - b.left);
+      if (Math.abs(row.items[0].left - box.left) > 2) {
+        issues.push("row " + i + " does not start at the left edge");
+      }
+      const last = row.items[row.items.length - 1];
+      if (Math.abs(last.right - box.right) > 2) {
+        issues.push("row " + i + " does not end at the right edge");
+      }
+      for (let n = 1; n < row.items.length; n++) {
+        const space = row.items[n].left - row.items[n - 1].right;
+        if (space > gap + 2) issues.push("row " + i + " empty column gap " + space);
+      }
+    });
+    return { width: box.width, rows: rows.map((r) => r.items.length), issues };
+  });
+  if (report.issues.length) fail("gallery empty cells at " + width + "px: " + JSON.stringify(report));
+}
+
 async function overflow(page, width) {
   await page.setViewportSize({ width, height: 800 });
   const info = await page.evaluate(() => ({
@@ -172,6 +214,7 @@ async function main() {
 
     await overflow(page, 390);
     await overflow(page, 320);
+    for (const w of [1440, 1024, 768, 390, 320]) await galleryFilled(page, w);
 
     await page.setViewportSize({ width: 390, height: 844 });
     const bar = await page.evaluate(() => {
