@@ -217,6 +217,61 @@ async function main() {
     for (const w of [1440, 1024, 768, 390, 320]) await galleryFilled(page, w);
 
     await page.setViewportSize({ width: 390, height: 844 });
+    const chrome = await page.evaluate(() => {
+      const header = document.querySelector("header.site");
+      const logo = document.querySelector("header.site .logo");
+      const nav = document.querySelector("nav.main");
+      const theme = document.querySelector(".theme-toggle");
+      const eyebrow = document.querySelector(".hero .eyebrow");
+      const hero = document.querySelector(".hero");
+      const call = document.querySelector(".sticky-call a.call");
+      const quote = document.querySelector(".sticky-call a.quote");
+      const hb = header.getBoundingClientRect();
+      const lb = logo.getBoundingClientRect();
+      const nb = nav.getBoundingClientRect();
+      const tb = theme.getBoundingClientRect();
+      const eb = eyebrow.getBoundingClientRect();
+      const links = [...nav.querySelectorAll("a")].filter((a) => getComputedStyle(a).display !== "none");
+      const linkTops = links.map((a) => Math.round(a.getBoundingClientRect().top));
+      const csCall = getComputedStyle(call);
+      const csQuote = getComputedStyle(quote);
+      const rgb = (s) => s.replace(/\s/g, "");
+      return {
+        headerSticky: getComputedStyle(header).position,
+        logoTop: Math.round(lb.top),
+        themeTop: Math.round(tb.top),
+        logoLeft: lb.left,
+        themeRight: tb.right,
+        navTop: Math.round(nb.top),
+        navLeft: nb.left,
+        headerBottom: hb.bottom,
+        eyebrowTop: eb.top,
+        heroMin: getComputedStyle(hero).minHeight,
+        copyJustify: getComputedStyle(document.querySelector(".hero-copy")).justifyContent,
+        linkTops,
+        linkCount: links.length,
+        callBg: rgb(csCall.backgroundColor),
+        callColor: rgb(csCall.color),
+        quoteBg: rgb(csQuote.backgroundColor),
+        quoteColor: rgb(csQuote.color),
+        quoteBorder: csQuote.borderTopWidth,
+        callW: call.getBoundingClientRect().width,
+        quoteW: quote.getBoundingClientRect().width
+      };
+    });
+    if (chrome.headerSticky !== "sticky") fail("header not sticky at 390");
+    if (Math.abs(chrome.logoTop - chrome.themeTop) > 8) fail("logo and theme not on row 1: " + JSON.stringify(chrome));
+    if (chrome.navTop <= chrome.logoTop + 8) fail("nav not on row 2 below logo: " + JSON.stringify(chrome));
+    if (new Set(chrome.linkTops).size !== 1) fail("nav links not one line: " + JSON.stringify(chrome.linkTops));
+    if (chrome.linkCount !== 4) fail("expected 4 compact nav links, got " + chrome.linkCount);
+    const heroGap = chrome.eyebrowTop - chrome.headerBottom;
+    if (heroGap < 24 || heroGap > 44) fail("hero gap under header should be ~32px, got " + heroGap);
+    if (chrome.copyJustify === "center") fail("hero still vertically centred on mobile");
+    if (!/rgb\(0,\s*150,\s*184\)/.test(chrome.callBg) && chrome.callBg !== "rgb(0,150,184)") fail("Call is not cyan: " + chrome.callBg);
+    if (chrome.quoteBg !== "rgb(255,255,255)") fail("Quote is not white: " + chrome.quoteBg);
+    if (parseFloat(chrome.quoteBorder) < 1) fail("Quote missing 1px border");
+    if (Math.abs(chrome.callW - chrome.quoteW) > 2) fail("Call and Quote not equal width: " + chrome.callW + " " + chrome.quoteW);
+
     const bar = await page.evaluate(() => {
       const el = document.querySelector(".sticky-call");
       const cs = getComputedStyle(el);
