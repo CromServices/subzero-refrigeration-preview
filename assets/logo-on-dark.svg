@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" role="img" aria-label="Subzero Refrigeration">
+  <defs>
+    <linearGradient id="disc" x1="30" y1="20" x2="70" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0A6A86"/>
+      <stop offset="100%" stop-color="#00384C"/>
+    </linearGradient>
+  </defs>
+  <!-- mark -->
+  <g transform="translate(10,10)">
+    <circle cx="90" cy="90" r="88" fill="url(#disc)"/>
+    <circle cx="90" cy="90" r="80" fill="none" stroke="#2ED0F0" stroke-width="6"/>
+    <!-- snowflake -->
+    <g fill="#F4FCFF" stroke="#F4FCFF" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(90 90)">
+        <g transform="rotate(0)">
+          <rect x="-3.2" y="-62" width="6.4" height="46" rx="1.4"/>
+          <rect x="-3" y="-44" width="22" height="5" rx="1.4" transform="rotate(-35 0 -41)"/>
+          <rect x="-19" y="-44" width="22" height="5" rx="1.4" transform="rotate(35 -0 -41)"/>
+        </g>
+        <g transform="rotate(60)">
+          <rect x="-3.2" y="-62" width="6.4" height="46" rx="1.4"/>
+          <rect x="-3" y="-44" width="22" height="5" rx="1.4" transform="rotate(-35 0 -41)"/>
+          <rect x="-19" y="-44" width="22" height="5" rx="1.4" transform="rotate(35 -0 -41)"/>
+        </g>
+        <g transform="rotate(120)">
+          <rect x="-3.2" y="-62" width="6.4" height="46" rx="1.4"/>
+          <rect x="-3" y="-44" width="22" height="5" rx="1.4" transform="rotate(-35 0 -41)"/>
+          <rect x="-19" y="-44" width="22" height="5" rx="1.4" transform="rotate(35 -0 -41)"/>
+        </g>
+        <g transform="rotate(180)">
+          <rect x="-3.2" y="-62" width="6.4" height="46" rx="1.4"/>
+          <rect x="-3" y="-44" width="22" height="5" rx="1.4" transform="rotate(-35 0 -41)"/>
+          <rect x="-19" y="-44" width="22" height="5" rx="1.4" transform="rotate(35 -0 -41)"/>
+        </g>
+        <g transform="rotate(240)">
+          <rect x="-3.2" y="-62" width="6.4" height="46" rx="1.4"/>
+          <rect x="-3" y="-44" width="22" height="5" rx="1.4" transform="rotate(-35 0 -41)"/>
+          <rect x="-19" y="-44" width="22" height="5" rx="1.4" transform="rotate(35 -0 -41)"/>
+        </g>
+        <g transform="rotate(300)">
+          <rect x="-3.2" y="-62" width="6.4" height="46" rx="1.4"/>
+          <rect x="-3" y="-44" width="22" height="5" rx="1.4" transform="rotate(-35 0 -41)"/>
+          <rect x="-19" y="-44" width="22" height="5" rx="1.4" transform="rotate(35 -0 -41)"/>
+        </g>
+      </g>
+      <!-- centre cube -->
+      <g transform="translate(90 90)">
+        <polygon points="0,-16 14,-8 14,8 0,16 -14,8 -14,-8" fill="#2ED0F0"/>
+        <polygon points="0,-16 14,-8 0,0 -14,-8" fill="#E7FAFF"/>
+        <polygon points="0,0 14,-8 14,8 0,16" fill="#0892B0"/>
+        <polygon points="0,0 0,16 -14,8 -14,-8" fill="#0B6A80"/>
+      </g>
+    </g>
+  </g>
+  <!-- wordmark, filled later as text for cairosvg -->
+  <text x="210" y="100" font-family="Poppins, Inter, DejaVu Sans, sans-serif" font-weight="700" font-size="64" fill="#E8F7FB" letter-spacing="-1.2">subzero</text>
+  <text x="212" y="152" font-family="Poppins, Inter, DejaVu Sans, sans-serif" font-weight="600" font-size="32" fill="#9CD6E6" letter-spacing="3.2">refrigeration</text>
+</svg>
