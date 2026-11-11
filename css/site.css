@@ -37,14 +37,19 @@ body{
   background:var(--paper);
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  overflow-x:clip;
+  transition:background-color 200ms ease,color 200ms ease;
 }
+header.site,main,section,footer.site,.card,.saved,.btn{
+  transition:background-color 200ms ease,color 200ms ease,border-color 200ms ease,background 200ms ease;
+}
+img,picture,video{transition:none}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 a[href^="mailto:"]{overflow-wrap:break-word}
 .wrap{width:min(var(--max),calc(100% - 48px));margin:0 auto}
 
-header.site{position:sticky;top:0;z-index:40;background:var(--header);color:#fff}
+header.site{position:sticky;top:0;z-index:40;background:var(--header);color:#fff;overflow:visible;transform:none}
 header.site .bar{display:flex;align-items:center;gap:20px;min-height:76px}
 header.site .logo img{height:52px;width:auto}
 nav.main{display:flex;align-items:center;gap:16px;margin-left:auto;font-size:14px;font-weight:600;flex-wrap:wrap;justify-content:flex-end}
@@ -62,13 +67,39 @@ nav.main a.btn-cyan{color:#fff;padding:10px 20px}
 .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
 .theme-toggle{
   width:44px;height:44px;margin-left:4px;padding:0;
-  border:1px solid rgba(255,255,255,.45);background:transparent;color:#fff;
-  border-radius:999px;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;
+  border:0;background:transparent;color:#F4FCFF;
+  cursor:pointer;flex:0 0 44px;
+  display:grid;place-items:center;
 }
-.theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-html[data-theme="light"] .icon-sun{display:none}
-html[data-theme="dark"] .icon-moon{display:none}
+.theme-toggle-face{
+  width:40px;height:40px;border-radius:999px;
+  border:1px solid color-mix(in srgb, currentColor 25%, transparent);
+  background:transparent;
+  display:grid;place-items:center;grid-template-areas:"icon";
+}
+.theme-toggle:hover .theme-toggle-face,
+.theme-toggle:focus-visible .theme-toggle-face{
+  background:color-mix(in srgb, currentColor 10%, transparent);
+}
+.theme-toggle:focus-visible{
+  outline:2px solid var(--ice);
+  outline-offset:2px;
+}
+.theme-toggle svg{
+  grid-area:icon;
+  width:20px;height:20px;
+  fill:none;stroke:currentColor;stroke-width:1.75;
+  stroke-linecap:round;stroke-linejoin:round;
+  opacity:0;
+  transform:rotate(-90deg) scale(.6);
+  transition:opacity 250ms ease,transform 250ms ease;
+  pointer-events:none;
+}
+html[data-theme="light"] .icon-moon,
+html[data-theme="dark"] .icon-sun{
+  opacity:1;
+  transform:rotate(0deg) scale(1);
+}
 
 .hero{background:var(--deep);color:#fff;padding:0}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;min-height:calc(100svh - 76px);align-items:stretch}

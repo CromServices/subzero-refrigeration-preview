@@ -217,6 +217,7 @@ async function main() {
     for (const w of [1440, 1024, 768, 390, 320]) await galleryFilled(page, w);
 
     await page.setViewportSize({ width: 390, height: 844 });
+    await page.evaluate(() => window.scrollTo(0, 0));
     const chrome = await page.evaluate(() => {
       const header = document.querySelector("header.site");
       const logo = document.querySelector("header.site .logo");
@@ -291,10 +292,68 @@ async function main() {
     if (bar.height > 64) fail("Call|Quote bar too tall: " + bar.height);
     if (!/Call/i.test(bar.text) || !/Quote/i.test(bar.text)) fail("Call|Quote labels missing: " + bar.text);
 
+    async function stickyAt(width) {
+      await page.setViewportSize({ width, height: width <= 400 ? 844 : 900 });
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.evaluate(() => window.scrollTo(0, 1500));
+      await page.waitForTimeout(80);
+      const info = await page.evaluate(() => {
+        const header = document.querySelector("header.site");
+        const bar = document.querySelector(".sticky-call");
+        const hr = header.getBoundingClientRect();
+        const br = bar.getBoundingClientRect();
+        return {
+          top: hr.top,
+          bottom: hr.bottom,
+          barDisplay: getComputedStyle(bar).display,
+          barTop: br.top,
+          vh: window.innerHeight,
+          y: window.scrollY
+        };
+      });
+      if (info.y < 1500) fail("did not scroll 1500px at " + width + ": " + info.y);
+      if (info.top !== 0) fail("header top is " + info.top + " after scroll at " + width + " (expected 0)");
+      if (info.barDisplay !== "none" && info.bottom > info.barTop - 0.5) {
+        fail("header covers sticky-call bar at " + width + ": " + JSON.stringify(info));
+      }
+      await page.evaluate(() => window.scrollTo(0, 0));
+    }
+    await stickyAt(1440);
+    await stickyAt(390);
+
+    function iconState() {
+      return page.evaluate(() => {
+        const theme = document.documentElement.getAttribute("data-theme");
+        const moon = getComputedStyle(document.querySelector(".icon-moon"));
+        const sun = getComputedStyle(document.querySelector(".icon-sun"));
+        return {
+          theme,
+          moonOp: Number(moon.opacity),
+          sunOp: Number(sun.opacity),
+          moonDisplay: moon.display,
+          sunDisplay: sun.display
+        };
+      });
+    }
     const before = await page.getAttribute("html", "data-theme");
+    const iconsBefore = await iconState();
+    if (iconsBefore.moonDisplay === "none" || iconsBefore.sunDisplay === "none") {
+      fail("toggle still uses display:none swap: " + JSON.stringify(iconsBefore));
+    }
+    if (before === "light") {
+      if (!(iconsBefore.moonOp > 0.9 && iconsBefore.sunOp < 0.1)) fail("light mode should show moon: " + JSON.stringify(iconsBefore));
+    } else if (!(iconsBefore.sunOp > 0.9 && iconsBefore.moonOp < 0.1)) {
+      fail("dark mode should show sun: " + JSON.stringify(iconsBefore));
+    }
     await page.click('[aria-label="Switch light/dark"]');
     const after = await page.getAttribute("html", "data-theme");
     if (!before || before === after) fail("theme toggle did not switch (" + before + " -> " + after + ")");
+    const iconsAfter = await iconState();
+    if (after === "light") {
+      if (!(iconsAfter.moonOp > 0.9 && iconsAfter.sunOp < 0.1)) fail("after click, light should show moon: " + JSON.stringify(iconsAfter));
+    } else if (!(iconsAfter.sunOp > 0.9 && iconsAfter.moonOp < 0.1)) {
+      fail("after click, dark should show sun: " + JSON.stringify(iconsAfter));
+    }
     const stored = await page.evaluate(() => localStorage.getItem("subzero-theme"));
     if (stored !== after) fail("theme not remembered in localStorage");
     await page.click('[aria-label="Switch light/dark"]');
