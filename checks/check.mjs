@@ -268,7 +268,7 @@ async function main() {
     const heroGap = chrome.eyebrowTop - chrome.headerBottom;
     if (heroGap < 24 || heroGap > 44) fail("hero gap under header should be ~32px, got " + heroGap);
     if (chrome.copyJustify === "center") fail("hero still vertically centred on mobile");
-    if (!/rgb\(0,\s*150,\s*184\)/.test(chrome.callBg) && chrome.callBg !== "rgb(0,150,184)") fail("Call is not cyan: " + chrome.callBg);
+    if (!/rgb\(0,\s*129,\s*159\)/.test(chrome.callBg) && chrome.callBg !== "rgb(0,129,159)") fail("Call is not cyan: " + chrome.callBg);
     if (chrome.quoteBg !== "rgb(255,255,255)") fail("Quote is not white: " + chrome.quoteBg);
     if (parseFloat(chrome.quoteBorder) < 1) fail("Quote missing 1px border");
     if (Math.abs(chrome.callW - chrome.quoteW) > 2) fail("Call and Quote not equal width: " + chrome.callW + " " + chrome.quoteW);

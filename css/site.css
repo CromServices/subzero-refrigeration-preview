@@ -61,8 +61,8 @@ nav.main a:hover{color:var(--ice)}
   font-weight:600;font-size:14px;text-decoration:none;
   border:1px solid transparent;cursor:pointer;font-family:inherit;
 }
-.btn-cyan{background:var(--cyan);color:#fff;border-color:var(--cyan)}
-.btn-cyan:hover{background:var(--cyan-deep)}
+.btn-cyan{background:#00819F;color:#fff;border-color:#00819F}
+.btn-cyan:hover{background:#007A96;border-color:#007A96}
 nav.main a.btn-cyan{color:#fff;padding:10px 20px}
 .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
 .theme-toggle{
@@ -270,7 +270,8 @@ footer.site img{height:36px;width:auto}
     text-decoration:none;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
     white-space:nowrap;overflow:hidden;border-radius:2px;border:1px solid transparent;
   }
-  .sticky-call a.call{background:var(--cyan);color:#fff;border-color:var(--cyan)}
+  .sticky-call a.call{background:#00819F;color:#fff;border-color:#00819F}
+  .sticky-call a.call:hover{background:#007A96;border-color:#007A96}
   .sticky-call a.quote{background:#fff;color:var(--deep);border-color:var(--deep)}
   body{padding-bottom:60px}
 }
